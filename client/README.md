@@ -1,8 +1,32 @@
-# React + Vite
+# Client Side - README
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Tech Stack
 
-Currently, two official plugins are available:
+- **Frontend:** React, Tailwind CSS, Vite
+- **State Management:** Context API
+- **API Interaction:** Axios
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Cloning Instructions
+
+1. Navigate to the client directory:
+```bash
+cd Meet-Me/client
+```
+Install dependencies:
+
+```bash
+npm install
+```
+Start the development server:
+
+```bash
+npm run dev
+```
+
+## Overview
+The client side handles the user interface and interactions. It provides a seamless experience for users to view posts, create profiles, and engage with the community.
+
+## Currently Working On
+**Feature Enhancement:** Implementing post deletion and update functionality.
+
+**UI/UX Improvement:** Making the app responsive for tablet and mobile views.
