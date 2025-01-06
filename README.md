@@ -29,5 +29,5 @@ Meet-Me/
 
 ## Links to README Files
 
-- [Client README](/github.com/birukabza13/Meet-Me/tree/main/client/README.md)
-- [Server README](/github.com/birukabza13/Meet-Me/tree/main/Server/README.md)
+- [Client README](https://github.com/birukabza13/Meet-Me/blob/main/client/REDAME.md)
+- [Server README](https://github.com/birukabza13/Meet-Me/blob/main/server/REDAME.md)

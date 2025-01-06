@@ -8,6 +8,9 @@
 - **Backend:** Django, Django REST Framework (DRF)
 - **Database:** PostgreSQL
 - **Authentication:** JWT (JSON Web Tokens)
+- **Image Hosting:** Cloudinary
+- **API Deployed on:** [Render.com](https://render.com)
+- **Database Hosting:** [Neon.tech](https://neon.tech)
 
 ## Cloning Instructions
 
@@ -53,3 +56,5 @@ The server side manages the APIs, database interactions, and business logic. It 
 **Feature Addition**: Implementing a comment system for posts.
 
 **Improvement**: Enhancing search functionality for easier content discovery.
+
+**Documentation**: Documentation using swagger UI.
