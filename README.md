@@ -7,13 +7,25 @@ Welcome to "Meet Me," a social media platform designed for artists to share thei
 "Meet Me" is a platform where artists can showcase their creativity, engage with the community, and discover new talents. The app supports various art forms and provides a vibrant and interactive space for users.
 
 ## Directory Structure
+
+```bash
 Meet-Me/
 ├── README.md
 ├── Server/
-│ └── ... (server files)
+│   ├── manage.py
+│   ├── requirements.txt
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── core/
+│       └── ... (app files)
 └── client/
-└── ... (client files)
-
+    ├── README.md
+    ├── package.json
+    └── src/
+        └── ... (React files)
+```
 
 ## Links to README Files
 
