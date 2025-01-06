@@ -1,11 +1,13 @@
 import { FaPlus } from "react-icons/fa";
 import { IoPersonCircleSharp } from "react-icons/io5";
 
-import { fetchUserProfile, toggleFollow } from "../../api/userApi";
+import { fetchUserProfile, toggleFollow, signOutApi } from "../../api/userApi";
 
 import { useEffect, useState } from "react";
 
-import { SERVER_URL } from "../../constants/constants";
+import { CLOUDINARY_BASE_URL } from "../../constants/constants";
+
+import { Link, useNavigate } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
@@ -13,10 +15,15 @@ const UserDetails = ({ username }) => {
     const [loading, setLoading] = useState(true);
     const [followersCount, setFollowerCount] = useState(0);
     const [followingCount, setFollowingCount] = useState(0);
+    const [postsCount, setPostsCount] = useState(0);
     const [avatarUrl, setAvatarUrl] = useState("");
     const [bio, setBio] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [showEditProfile, setShowEditProfile] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getUserData = async () => {
@@ -28,6 +35,9 @@ const UserDetails = ({ username }) => {
                 setBio(userData.bio);
                 setFollowerCount(userData.followers_count);
                 setFollowingCount(userData.following_count);
+                setPostsCount(userData.post_count);
+                setFirstName(userData.first_name);
+                setLastName(userData.last_name);
             } catch (error) {
                 console.log(error, "error occurred while getting user data");
             } finally {
@@ -49,13 +59,26 @@ const UserDetails = ({ username }) => {
             alert("error occurred while trying to follow/unfollow");
         }
     };
+
+    const handleSignOut = async () => {
+        try {
+
+            await signOutApi();
+            localStorage.removeItem("user");
+            navigate("/");
+        }catch (error) {
+            console.log(error, "error occurred while signing out");
+            alert("error occurred while signing out");
+        }
+    }
+    
     return (
         <>
             <div className="flex justify-center  mb-10">
                 <div className="relative size-48">
                     {avatarUrl ? (
                         <img
-                            src={`${SERVER_URL}${avatarUrl}`}
+                            src={`${CLOUDINARY_BASE_URL}${avatarUrl}`}
                             alt="User Avatar"
                             className="w-full h-full rounded-full object-cover border-4 border-primary shadow-md"
                         />
@@ -77,9 +100,15 @@ const UserDetails = ({ username }) => {
 
             <div className="flex flex-col justify-start gap-3 pt-5">
                 {showEditProfile ? (
-                    <div className="flex justify-start mb-3 ">
-                        <button className="px-4 py-2 bg-primary text-white rounded-lg shadow-sm shadow-secondary hover:shadow-none hover:bg-secondary">
-                            Edit Profile
+                    <div className="flex  items-center gap-24">
+
+                        <div className="flex ">
+                            <Link to="/profile/edit" className="px-4 py-2 bg-primary text-white rounded-lg shadow-sm shadow-secondary hover:shadow-none hover:bg-secondary">
+                                Edit Profile
+                            </Link>
+                        </div>
+                        <button className="all-unset bg-black w-28  h-10 rounded-lg flex justify-center items-center hover:bg-secondary shadow-secondary shadow-sm" onClick={handleSignOut}>
+                            <span className="text-center">Sign out</span>
                         </button>
                     </div>
                 ) : (
@@ -102,7 +131,7 @@ const UserDetails = ({ username }) => {
 
                 <div className="flex gap-12 justify-center text-white">
                     <div className="flex gap-1">
-                        <span>2</span>
+                        <span>{loading ? "-" : postsCount}</span>
                         <p>posts</p>
                     </div>
                     <div className="flex gap-1">
@@ -113,6 +142,11 @@ const UserDetails = ({ username }) => {
                         <span>{loading ? "-" : followingCount}</span>
                         <p>following</p>
                     </div>
+                </div>
+
+                <div className="flex gap-1">
+                    <h3>{firstName}</h3>
+                    <h3>{lastName}</h3>
                 </div>
 
                 <div className="mt-4">

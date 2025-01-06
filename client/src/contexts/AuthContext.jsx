@@ -8,7 +8,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAuthLoading, setIsAuthLoading] = useState(true);
-    const [username, setUsername] = useState(null);  // New state for username
+    const [currentUsername, setCurrentUsername] = useState(null);  
 
     const location = useLocation();
 
@@ -18,10 +18,10 @@ export const AuthProvider = ({ children }) => {
             try {
                 const response = await getAuth();
                 setIsAuthenticated(true);
-                setUsername(response.username)
+                setCurrentUsername(response.username)
             } catch {
                 setIsAuthenticated(false);
-                setUsername(null);
+                setCurrentUsername(null);
             } finally {
                 setIsAuthLoading(false);
             }
@@ -33,9 +33,19 @@ export const AuthProvider = ({ children }) => {
     const authSignIn = async (username, password) => {
         try {
             const response = await signInApi(username, password);
-    
+            const userData = response.user;
+            localStorage.setItem("user", JSON.stringify({
+                "user_id": userData.user_id, 
+                "username": userData.username,
+                "first_name": userData.first_name,
+                "last_name": userData.last_name,
+                "bio": userData.bio,
+                "avatar": userData.avatar,
+            }))
             if (response.success) {
-                window.location.href = `/profile/${username}`;
+                setTimeout(() => {
+                    window.location.href = `/profile/${username}`;
+                }, 1000);
             } else {
                 alert(response.message || 'Invalid username or password');
             }
@@ -47,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, isAuthLoading, authSignIn, username }}>
+        <AuthContext.Provider value={{ isAuthenticated, isAuthLoading, authSignIn, currentUsername }}>
             {children}
         </AuthContext.Provider>
     );

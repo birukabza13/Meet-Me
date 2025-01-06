@@ -5,6 +5,8 @@ from .models import UserProfile, Post
 class UserProfileSerializer(serializers.ModelSerializer):
     followers_count = serializers.SerializerMethodField()
     following_count = serializers.SerializerMethodField()
+    post_count = serializers.SerializerMethodField()
+    liked_count = serializers.SerializerMethodField()
 
     class Meta:
         model = UserProfile
@@ -13,8 +15,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "username",
             "bio",
             "avatar",
+            "first_name",
+            "last_name",
             "followers_count",
             "following_count",
+            "post_count",
+            "liked_count",  
         ]
 
     def get_followers_count(self, obj):
@@ -23,12 +29,19 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def get_following_count(self, obj):
         return obj.following.count()
 
+    def get_post_count(self, obj):
+        return obj.posts.count()  
+    
+    def get_liked_count(self, obj):
+        return obj.liked_posts.count()
+
     def validate_bio(self, value):
         if value:
             if len(value) > 600:
                 raise serializers.ValidationError(
                     "Bio can not be greater than 600 characters"
                 )
+        return value
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -53,10 +66,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
-    liked_count = serializers.SerializerMethodField()
     username = serializers.SerializerMethodField() 
-    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
-    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = Post
@@ -69,21 +81,19 @@ class PostSerializer(serializers.ModelSerializer):
             "updated_at",
             "likes",
             "likes_count",
-            "liked_count",
         ]
+        read_only_fields = ["likes", "likes_count", "is_liked"]
 
     def get_likes_count(self, obj):
         return obj.likes.count()
 
-    def get_liked_count(self, obj):
-        return obj.user.liked_posts.count()
-
     def get_username(self, obj):
         return obj.user.username
+    
+    
+    
 
-    def validate(self, data):
-        if not (data.get("content") or data.get("image")):
-            raise serializers.ValidationError("A post must have either an image or content.")
-        return data
+
+
 
     

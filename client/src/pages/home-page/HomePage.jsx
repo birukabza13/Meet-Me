@@ -1,8 +1,8 @@
-
+import Feed from "../../components/feed/Feed"
 const HomePage = () => {
   return (
-    <div>
-      
+    <div className=" pt-16">
+      <Feed/>
     </div>
   )
 }
